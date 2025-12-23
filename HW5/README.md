@@ -14,4 +14,4 @@
 ## Demo（你部署後貼連結）
 - Q1: https://q1-ai-detector.streamlit.app/
 - Q2: <貼 Streamlit link>
-- Q3: <貼 Streamlit link>
+- Q3: https://q3-ppt-redesign.streamlit.app/
