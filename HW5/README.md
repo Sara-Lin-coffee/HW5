@@ -11,7 +11,15 @@
 - `q3_ppt_redesign/`
 - `report/`（PDF 報告原稿：Markdown）
 
-## Demo（你部署後貼連結）
-- Q1: https://q1-ai-detector.streamlit.app/
-- Q2: https://q2-n8n-workflow.streamlit.app/
-- Q3: https://q3-ppt-redesign.streamlit.app/
+## Streamlit Demo Links
+
+- Q1 — AI / Human Article Detector  
+  https://q1-ai-detector.streamlit.app/
+
+- Q2 — n8n Mock AI Automation Workflow  
+  （Streamlit → Webhook → Mock AI Summary）  
+  https://<你的-q2-streamlit-url>
+
+- Q3 — PPT Redesign Demo  
+  https://q3-ppt-redesign.streamlit.app/
+
