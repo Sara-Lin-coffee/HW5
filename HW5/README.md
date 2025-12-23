@@ -12,6 +12,6 @@
 - `report/`（PDF 報告原稿：Markdown）
 
 ## Demo（你部署後貼連結）
-- Q1: <貼 Streamlit link>
+- Q1: https://q1-ai-detector.streamlit.app/
 - Q2: <貼 Streamlit link>
 - Q3: <貼 Streamlit link>
