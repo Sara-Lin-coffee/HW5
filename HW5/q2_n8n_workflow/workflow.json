@@ -1,9 +1,9 @@
 {
-  "name": "HW5-Q2-MVP-Webhook-Summarize",
+  "name": "HW5-Q2-MVP-Webhook-MockAI-Summarize",
   "nodes": [
     {
       "parameters": {
-        "path": "hw5-summary",
+        "path": "hw5-mock-summary",
         "httpMethod": "POST",
         "responseMode": "lastNode"
       },
@@ -11,10 +11,7 @@
       "name": "Webhook",
       "type": "n8n-nodes-base.webhook",
       "typeVersion": 1,
-      "position": [
-        300,
-        300
-      ]
+      "position": [300, 300]
     },
     {
       "parameters": {
@@ -33,67 +30,25 @@
       "name": "Set Input",
       "type": "n8n-nodes-base.set",
       "typeVersion": 2,
-      "position": [
-        520,
-        300
-      ]
+      "position": [520, 300]
     },
     {
       "parameters": {
-        "resource": "chat",
-        "operation": "completion",
-        "model": "gpt-4o-mini",
-        "messages": {
-          "values": [
-            {
-              "role": "system",
-              "content": "你是助理，請把使用者提供的內容做成繁體中文的重點摘要（5 點）+ 一句結論。"
-            },
-            {
-              "role": "user",
-              "content": "={{$json.text}}"
-            }
-          ]
-        }
+        "functionCode": "function splitSentences(s){\n  if(!s) return [];\n  // 簡單斷句（中英都盡量兼容）\n  return s\n    .replace(/\\r/g,'')\n    .split(/(?<=[。！？!?\\n])\\s*/)\n    .map(x=>x.trim())\n    .filter(Boolean);\n}\n\nfunction topKeywords(text, k=6){\n  if(!text) return [];\n  // 超簡單關鍵詞：去掉常見停用字，算字詞頻率（中英混合）\n  const stop = new Set(['的','了','是','我','你','他','她','它','我們','你們','他們','以及','與','和','或','在','對','把','將','就','而','也','都','很','更','最','這','那','有','沒有','可以','需要','因為','所以','如果','但是','並且','可能','進行','使用','提供','完成']);\n  const tokens = text\n    .toLowerCase()\n    .replace(/[\\d\\p{P}\\p{S}]/gu,' ')\n    .split(/\\s+/)\n    .filter(t=>t && t.length>=2 && !stop.has(t));\n\n  // 也把中文連續字元當 token（粗略）\n  const zh = (text.match(/[\\u4e00-\\u9fff]{2,}/g) || []).filter(t=>!stop.has(t));\n  const all = tokens.concat(zh);\n\n  const freq = new Map();\n  for(const t of all){\n    freq.set(t, (freq.get(t)||0)+1);\n  }\n  return [...freq.entries()]\n    .sort((a,b)=>b[1]-a[1])\n    .slice(0,k)\n    .map(([w])=>w);\n}\n\nconst input = ($json.text || '').trim();\nconst sents = splitSentences(input);\n\n// 摘要：取前 2~3 句（MVP）\nconst summary = sents.slice(0, Math.min(3, sents.length)).join(' ');\n\n// 重點：取前 5 句（不足就少一點）\nconst bullets = sents.slice(0, Math.min(5, sents.length));\n\nconst keywords = topKeywords(input, 6);\n\nconst conclusion = sents.length\n  ? `結論：整體重點可整理為「${(keywords[0]||'重點整理')}」相關的行動與說明。`\n  : '結論：請提供更多內容以便整理。';\n\nreturn {\n  ok: true,\n  mode: 'mock-ai',\n  summary,\n  bullets,\n  keywords,\n  conclusion,\n  note: '此為作業 MVP 的 Mock AI 回應（可替換為 OpenAI/Claude/Gemini 節點）。'\n};"
       },
-      "id": "OpenAI",
-      "name": "OpenAI Summary",
-      "type": "n8n-nodes-base.openAi",
-      "typeVersion": 3,
-      "position": [
-        760,
-        300
-      ],
-      "credentials": {
-        "openAiApi": {
-          "id": "YOUR_CREDENTIAL_ID",
-          "name": "OpenAI account"
-        }
-      }
+      "id": "MockAI",
+      "name": "Mock AI Summary",
+      "type": "n8n-nodes-base.function",
+      "typeVersion": 2,
+      "position": [770, 300]
     }
   ],
   "connections": {
     "Webhook": {
-      "main": [
-        [
-          {
-            "node": "Set Input",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
+      "main": [[{ "node": "Set Input", "type": "main", "index": 0 }]]
     },
     "Set Input": {
-      "main": [
-        [
-          {
-            "node": "OpenAI Summary",
-            "type": "main",
-            "index": 0
-          }
-        ]
-      ]
+      "main": [[{ "node": "Mock AI Summary", "type": "main", "index": 0 }]]
     }
   },
   "active": false,
