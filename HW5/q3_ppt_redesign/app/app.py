@@ -1,18 +1,20 @@
 import os
 import streamlit as st
+from pathlib import Path
 
 st.set_page_config(page_title="Q3 PPT Redesign (MVP)", page_icon="🖼️", layout="centered")
 st.title("🖼️ Q3 — PPT 換版型（MVP）")
 st.caption("作業最低需求：輸出至少兩種不同風格的新 PPT。此 MVP 直接提供兩份成品下載。")
 
-ASSET_A = os.path.join("q3_ppt_redesign", "assets", "HW5_Q3_StyleA_MinimalTech.pptx")
-ASSET_B = os.path.join("q3_ppt_redesign", "assets", "HW5_Q3_StyleB_AcademicClean.pptx")
+BASE_DIR = Path(__file__).resolve().parents[1]  # .../HW5/q3_ppt_redesign
+ASSET_A = BASE_DIR / "assets" / "HW5_Q3_StyleA_MinimalTech.pptx"
+ASSET_B = BASE_DIR / "assets" / "HW5_Q3_StyleB_AcademicClean.pptx"
 
 st.subheader("下載兩種風格 PPT")
 col1, col2 = st.columns(2)
 
 with col1:
-    with open(ASSET_A, "rb") as f:
+    with open(str(ASSET_A), "rb") as f:
         st.download_button(
             "⬇️ 下載 Style A（Minimal Tech）",
             data=f,
@@ -22,7 +24,7 @@ with col1:
         )
 
 with col2:
-    with open(ASSET_B, "rb") as f:
+    with open(str(ASSET_B), "rb") as f:
         st.download_button(
             "⬇️ 下載 Style B（Academic Clean）",
             data=f,
