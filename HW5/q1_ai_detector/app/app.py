@@ -3,6 +3,7 @@ import joblib
 import numpy as np
 import streamlit as st
 
+
 st.set_page_config(page_title="Q1 AI/Human Detector (MVP)", page_icon="🧪", layout="centered")
 st.title("🧪 Q1 — AI / Human 文章偵測器（MVP）")
 
