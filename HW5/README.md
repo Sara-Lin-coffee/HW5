@@ -17,8 +17,7 @@
   https://q1-ai-detector.streamlit.app/
 
 - Q2 — n8n Mock AI Automation Workflow  
-  （Streamlit → Webhook → Mock AI Summary）  
-  https://<你的-q2-streamlit-url>
+  https://q2-n8n-workflow.streamlit.app/
 
 - Q3 — PPT Redesign Demo  
   https://q3-ppt-redesign.streamlit.app/
